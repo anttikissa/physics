@@ -77,7 +77,7 @@ function ball(x, y, radius) {
 
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
     ctx.fill();
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;

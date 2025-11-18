@@ -14,3 +14,4 @@ da9de8de: Constrain the canvas size so that on mobile (and desktop browser with 
 a837e78c: Implement ball to ball collision. Check every ball against every other ball. Form a line between two colliding balls; assume balls have the same mass and displace both of them equally along this line. Also change the velocities of the balls: mirror it along this line by taking a vector projection along the line and then v -= 2 * vProjection.
 fed4ca95: Refactor: extract update loop sections to functions: moveObjects, collideWalls, collideObjects, draw. Did I miss something?
 b900dda9: Yeah do apply gravity separately
+af365b39: On every collision, reduce velocity of colliding object by 10%

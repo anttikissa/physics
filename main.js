@@ -122,25 +122,29 @@ function collideWalls() {
         // Floor collision (y = -100)
         if (obj.y - obj.radius < -COORD_RANGE) {
             obj.y = -COORD_RANGE + obj.radius;
-            obj.vy = -obj.vy;
+            obj.vy = -obj.vy * 0.9;
+            obj.vx *= 0.9;
         }
 
         // Ceiling collision (y = 100)
         if (obj.y + obj.radius > COORD_RANGE) {
             obj.y = COORD_RANGE - obj.radius;
-            obj.vy = -obj.vy;
+            obj.vy = -obj.vy * 0.9;
+            obj.vx *= 0.9;
         }
 
         // Left wall collision (x = -100)
         if (obj.x - obj.radius < -COORD_RANGE) {
             obj.x = -COORD_RANGE + obj.radius;
-            obj.vx = -obj.vx;
+            obj.vx = -obj.vx * 0.9;
+            obj.vy *= 0.9;
         }
 
         // Right wall collision (x = 100)
         if (obj.x + obj.radius > COORD_RANGE) {
             obj.x = COORD_RANGE - obj.radius;
-            obj.vx = -obj.vx;
+            obj.vx = -obj.vx * 0.9;
+            obj.vy *= 0.9;
         }
     }
 }
@@ -181,11 +185,17 @@ function collideObjects() {
                 const dotA = a.vx * nx + a.vy * ny;
                 a.vx -= 2 * dotA * nx;
                 a.vy -= 2 * dotA * ny;
+                // Reduce velocity by 10%
+                a.vx *= 0.9;
+                a.vy *= 0.9;
 
                 // For ball b
                 const dotB = b.vx * nx + b.vy * ny;
                 b.vx -= 2 * dotB * nx;
                 b.vy -= 2 * dotB * ny;
+                // Reduce velocity by 10%
+                b.vx *= 0.9;
+                b.vy *= 0.9;
             }
         }
     }

@@ -253,6 +253,52 @@ function gameLoop(currentTime) {
 // Create a test ball at (0, 80)
 createBall(0, 80, Math.random() * 11 + 4);
 
+// Find ball at given coordinates, returns index or -1 if not found
+function findBallAt(x, y) {
+    for (let i = objects.length - 1; i >= 0; i--) {
+        const obj = objects[i];
+        const dx = x - obj.x;
+        const dy = y - obj.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist <= obj.radius) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Explode a ball: remove it and add impact velocity to nearby balls
+function explodeBall(index) {
+    const exploding = objects[index];
+    const EXPLOSION_RADIUS = 50; // Range of explosion effect
+    const EXPLOSION_STRENGTH = 200; // Base velocity to add
+
+    // Apply impact to nearby balls
+    for (let i = 0; i < objects.length; i++) {
+        if (i === index) continue;
+
+        const obj = objects[i];
+        const dx = obj.x - exploding.x;
+        const dy = obj.y - exploding.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < EXPLOSION_RADIUS && dist > 0) {
+            // Normalize direction
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            // Impact falls off with distance
+            const impact = EXPLOSION_STRENGTH * (1 - dist / EXPLOSION_RADIUS);
+
+            obj.vx += nx * impact;
+            obj.vy += ny * impact;
+        }
+    }
+
+    // Remove the exploding ball
+    objects.splice(index, 1);
+}
+
 // Handle canvas clicks/taps to create balls
 let pointerX = 0;
 let pointerY = 0;
@@ -275,6 +321,17 @@ function createBallAtPointer() {
 function startPointer(canvasX, canvasY) {
     pointerX = canvasX;
     pointerY = canvasY;
+
+    // Check if clicking on an existing ball
+    const x = fromCanvasX(canvasX);
+    const y = fromCanvasY(canvasY);
+    const ballIndex = findBallAt(x, y);
+
+    if (ballIndex !== -1) {
+        // Explode the ball
+        explodeBall(ballIndex);
+        return;
+    }
 
     // Create first ball immediately
     createBallAtPointer();

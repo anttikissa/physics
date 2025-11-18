@@ -136,6 +136,50 @@ function updatePhysics() {
             obj.vx = -obj.vx;
         }
     }
+
+    // Ball-to-ball collision detection and response
+    for (let i = 0; i < objects.length; i++) {
+        for (let j = i + 1; j < objects.length; j++) {
+            const a = objects[i];
+            const b = objects[j];
+
+            // Vector from a to b
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const minDist = a.radius + b.radius;
+
+            // Check for collision
+            if (dist < minDist && dist > 0) {
+                // Normalize the collision vector
+                const nx = dx / dist;
+                const ny = dy / dist;
+
+                // Calculate overlap and displace balls equally
+                const overlap = minDist - dist;
+                const halfOverlap = overlap / 2;
+
+                // Move balls apart
+                a.x -= nx * halfOverlap;
+                a.y -= ny * halfOverlap;
+                b.x += nx * halfOverlap;
+                b.y += ny * halfOverlap;
+
+                // Mirror velocities along collision line
+                // v -= 2 * vProjection where vProjection = (v · n) * n
+
+                // For ball a
+                const dotA = a.vx * nx + a.vy * ny;
+                a.vx -= 2 * dotA * nx;
+                a.vy -= 2 * dotA * ny;
+
+                // For ball b
+                const dotB = b.vx * nx + b.vy * ny;
+                b.vx -= 2 * dotB * nx;
+                b.vy -= 2 * dotB * ny;
+            }
+        }
+    }
 }
 
 // Render all objects

@@ -11,3 +11,4 @@ da9de8de: Constrain the canvas size so that on mobile (and desktop browser with 
 891c1ad9: Add simple collision detection and handling: floor, ceiling reverse y velocity, walls reverse x
 891c1ad9: Tapping on canvas creates a ball, r: 10, vx -50 to 50, vy -20 to 40
 183d9de8: Make balls a bit translucent so we can see if they overlap
+a837e78c: Implement ball to ball collision. Check every ball against every other ball. Form a line between two colliding balls; assume balls have the same mass and displace both of them equally along this line. Also change the velocities of the balls: mirror it along this line by taking a vector projection along the line and then v -= 2 * vProjection.

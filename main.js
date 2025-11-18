@@ -52,6 +52,16 @@ function toCanvasRadius(r) {
     return r / (2 * COORD_RANGE) * Math.min(WIDTH, HEIGHT);
 }
 
+// Convert from canvas pixels to coordinate system
+function fromCanvasX(canvasX) {
+    return (canvasX / WIDTH) * (2 * COORD_RANGE) - COORD_RANGE;
+}
+
+function fromCanvasY(canvasY) {
+    // Flip y-axis so positive is up
+    return COORD_RANGE - (canvasY / HEIGHT) * (2 * COORD_RANGE);
+}
+
 // Set canvas background color
 function setBackground(color) {
     ctx.fillStyle = color;
@@ -163,6 +173,22 @@ function gameLoop(currentTime) {
 
 // Create a test ball at (0, 80)
 createBall(0, 80, 10);
+
+// Handle canvas clicks/taps to create balls
+canvas.addEventListener('click', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    const canvasX = event.clientX - rect.left;
+    const canvasY = event.clientY - rect.top;
+
+    const x = fromCanvasX(canvasX);
+    const y = fromCanvasY(canvasY);
+
+    // Random velocities: vx -50 to 50, vy -20 to 40
+    const vx = Math.random() * 100 - 50;
+    const vy = Math.random() * 60 - 20;
+
+    createBall(x, y, 10, vx, vy);
+});
 
 // Start the game loop
 requestAnimationFrame(gameLoop);

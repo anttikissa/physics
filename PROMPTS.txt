@@ -5,3 +5,4 @@ c1df2923: commit
 27d8a41a: This is a basic JS project, index.html and main.js. Meta tags only enough to make it work on mobile too. We have a canvas, rectangular, and 2d context. Coordinates range from -100 to 100 both x and y. global function ball(x, y, radius) draws a circle, black outline on white backround, you can pick the canvas background color
 2dc183c8: mergw to main
 de16a382: make project available on gh pages
+de16a382: add README with link to gh pages and explanation how project is made: claude code web only, save prompts to PROMPTS.md, etc

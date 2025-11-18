@@ -1,0 +1,4 @@
+Make CLAUDE.md where the only thing is: save all prompts written by me to PROMPTS.txt, as is
+Check that it works; i.e. PROMPTS.txt should include this line
+c1df2923: Modify CLAUDE.md directive to save prompts to PROMPTS.txt so that every prompt should be preceded by short commit hash of the current working tree (8 characters, like 'c1df2923')
+c1df2923: commit

@@ -119,28 +119,40 @@ function moveObjects() {
 // Handle collisions with walls/boundaries
 function collideWalls() {
     for (const obj of objects) {
+        let collided = false;
+
         // Floor collision (y = -100)
         if (obj.y - obj.radius < -COORD_RANGE) {
             obj.y = -COORD_RANGE + obj.radius;
             obj.vy = -obj.vy;
+            collided = true;
         }
 
         // Ceiling collision (y = 100)
         if (obj.y + obj.radius > COORD_RANGE) {
             obj.y = COORD_RANGE - obj.radius;
             obj.vy = -obj.vy;
+            collided = true;
         }
 
         // Left wall collision (x = -100)
         if (obj.x - obj.radius < -COORD_RANGE) {
             obj.x = -COORD_RANGE + obj.radius;
             obj.vx = -obj.vx;
+            collided = true;
         }
 
         // Right wall collision (x = 100)
         if (obj.x + obj.radius > COORD_RANGE) {
             obj.x = COORD_RANGE - obj.radius;
             obj.vx = -obj.vx;
+            collided = true;
+        }
+
+        // Reduce velocity by 10% on collision
+        if (collided) {
+            obj.vx *= 0.9;
+            obj.vy *= 0.9;
         }
     }
 }
@@ -181,11 +193,17 @@ function collideObjects() {
                 const dotA = a.vx * nx + a.vy * ny;
                 a.vx -= 2 * dotA * nx;
                 a.vy -= 2 * dotA * ny;
+                // Reduce velocity by 10%
+                a.vx *= 0.9;
+                a.vy *= 0.9;
 
                 // For ball b
                 const dotB = b.vx * nx + b.vy * ny;
                 b.vx -= 2 * dotB * nx;
                 b.vy -= 2 * dotB * ny;
+                // Reduce velocity by 10%
+                b.vx *= 0.9;
+                b.vy *= 0.9;
             }
         }
     }
@@ -233,23 +251,74 @@ function gameLoop(currentTime) {
 }
 
 // Create a test ball at (0, 80)
-createBall(0, 80, 10);
+createBall(0, 80, Math.random() * 11 + 4);
 
 // Handle canvas clicks/taps to create balls
-canvas.addEventListener('click', (event) => {
-    const rect = canvas.getBoundingClientRect();
-    const canvasX = event.clientX - rect.left;
-    const canvasY = event.clientY - rect.top;
+let pointerX = 0;
+let pointerY = 0;
+let holdTimeout = null;
+let repeatInterval = null;
 
-    const x = fromCanvasX(canvasX);
-    const y = fromCanvasY(canvasY);
+function createBallAtPointer() {
+    const x = fromCanvasX(pointerX);
+    const y = fromCanvasY(pointerY);
 
     // Random velocities: vx -50 to 50, vy -20 to 40
     const vx = Math.random() * 100 - 50;
     const vy = Math.random() * 60 - 20;
 
-    createBall(x, y, 10, vx, vy);
+    // Random radius from 4 to 15
+    const radius = Math.random() * 11 + 4;
+    createBall(x, y, radius, vx, vy);
+}
+
+function startPointer(canvasX, canvasY) {
+    pointerX = canvasX;
+    pointerY = canvasY;
+
+    // Create first ball immediately
+    createBallAtPointer();
+
+    // After 0.3s, start repeating at 10/sec
+    holdTimeout = setTimeout(() => {
+        repeatInterval = setInterval(createBallAtPointer, 100);
+    }, 300);
+}
+
+function stopPointer() {
+    if (holdTimeout) {
+        clearTimeout(holdTimeout);
+        holdTimeout = null;
+    }
+    if (repeatInterval) {
+        clearInterval(repeatInterval);
+        repeatInterval = null;
+    }
+}
+
+// Mouse events
+canvas.addEventListener('mousedown', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    startPointer(event.clientX - rect.left, event.clientY - rect.top);
 });
+
+canvas.addEventListener('mouseup', stopPointer);
+canvas.addEventListener('mouseleave', stopPointer);
+
+// Touch events
+canvas.addEventListener('touchstart', (event) => {
+    event.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const touch = event.touches[0];
+    startPointer(touch.clientX - rect.left, touch.clientY - rect.top);
+});
+
+canvas.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    stopPointer();
+});
+
+canvas.addEventListener('touchcancel', stopPointer);
 
 // Start the game loop
 requestAnimationFrame(gameLoop);

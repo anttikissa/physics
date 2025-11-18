@@ -6,3 +6,4 @@ c1df2923: commit
 2dc183c8: mergw to main
 de16a382: make project available on gh pages
 de16a382: add README with link to gh pages and explanation how project is made: claude code web only, save prompts to PROMPTS.md, etc
+9e6e681a: Add simple physics loop. All objects like balls should contain x, y coordinates and velocities. Every frame (60 fps), change velocity. There should be gravity so that it takes about 1 second for a ball in (0, 80) to fall to the bottom (0, -100). Wait, is Y coordinate increasing when going up?

@@ -47,8 +47,70 @@ function ball(x, y, radius) {
     ctx.stroke();
 }
 
-// Clear and set initial background
-setBackground('#f0f0f0');
+// Physics constants
+const FPS = 60;
+const DT = 1 / FPS; // Time step in seconds
+// Gravity: ball at (0, 80) should fall to (0, -100) in ~1 second
+// Distance = 180 units, using d = 0.5 * g * t², g = 360 units/s²
+const GRAVITY = 360;
 
-// Example: draw a ball at the origin
-ball(0, 0, 10);
+// Physics objects array
+const objects = [];
+
+// Create a physics ball object
+function createBall(x, y, radius, vx = 0, vy = 0) {
+    const obj = { x, y, radius, vx, vy };
+    objects.push(obj);
+    return obj;
+}
+
+// Update physics for all objects
+function updatePhysics() {
+    for (const obj of objects) {
+        // Apply gravity (negative y direction)
+        obj.vy -= GRAVITY * DT;
+
+        // Update positions
+        obj.x += obj.vx * DT;
+        obj.y += obj.vy * DT;
+    }
+}
+
+// Render all objects
+function render() {
+    setBackground('#f0f0f0');
+
+    for (const obj of objects) {
+        ball(obj.x, obj.y, obj.radius);
+    }
+}
+
+// Main game loop
+let lastTime = 0;
+let accumulator = 0;
+
+function gameLoop(currentTime) {
+    if (lastTime === 0) {
+        lastTime = currentTime;
+    }
+
+    const frameTime = (currentTime - lastTime) / 1000; // Convert to seconds
+    lastTime = currentTime;
+
+    accumulator += frameTime;
+
+    // Fixed timestep physics updates
+    while (accumulator >= DT) {
+        updatePhysics();
+        accumulator -= DT;
+    }
+
+    render();
+    requestAnimationFrame(gameLoop);
+}
+
+// Create a test ball at (0, 80)
+createBall(0, 80, 10);
+
+// Start the game loop
+requestAnimationFrame(gameLoop);

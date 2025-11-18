@@ -302,6 +302,12 @@ canvas.addEventListener('mousedown', (event) => {
     startPointer(event.clientX - rect.left, event.clientY - rect.top);
 });
 
+canvas.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    pointerX = event.clientX - rect.left;
+    pointerY = event.clientY - rect.top;
+});
+
 canvas.addEventListener('mouseup', stopPointer);
 canvas.addEventListener('mouseleave', stopPointer);
 
@@ -311,6 +317,14 @@ canvas.addEventListener('touchstart', (event) => {
     const rect = canvas.getBoundingClientRect();
     const touch = event.touches[0];
     startPointer(touch.clientX - rect.left, touch.clientY - rect.top);
+});
+
+canvas.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const touch = event.touches[0];
+    pointerX = touch.clientX - rect.left;
+    pointerY = touch.clientY - rect.top;
 });
 
 canvas.addEventListener('touchend', (event) => {

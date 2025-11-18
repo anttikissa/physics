@@ -101,13 +101,16 @@ function createBall(x, y, radius, vx = 0, vy = 0) {
     return obj;
 }
 
-// Move all objects: apply gravity and update positions
+// Apply gravity to all objects
+function applyGravity() {
+    for (const obj of objects) {
+        obj.vy -= GRAVITY * DT;
+    }
+}
+
+// Move all objects: update positions based on velocities
 function moveObjects() {
     for (const obj of objects) {
-        // Apply gravity (negative y direction)
-        obj.vy -= GRAVITY * DT;
-
-        // Update positions
         obj.x += obj.vx * DT;
         obj.y += obj.vy * DT;
     }
@@ -190,6 +193,7 @@ function collideObjects() {
 
 // Update physics for all objects
 function updatePhysics() {
+    applyGravity();
     moveObjects();
     collideWalls();
     collideObjects();

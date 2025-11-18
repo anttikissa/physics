@@ -1,11 +1,38 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-// Canvas dimensions
-const WIDTH = 800;
-const HEIGHT = 600;
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
+// Canvas dimensions (will be updated on resize)
+let WIDTH = 800;
+let HEIGHT = 600;
+const ASPECT_RATIO = 4 / 3; // 800:600
+const MARGIN = 10;
+
+// Resize canvas to fit viewport with margins
+function resizeCanvas() {
+    const maxWidth = window.innerWidth - (MARGIN * 2);
+    const maxHeight = window.innerHeight - (MARGIN * 2);
+
+    // Calculate dimensions maintaining aspect ratio
+    let newWidth = maxWidth;
+    let newHeight = newWidth / ASPECT_RATIO;
+
+    // If height exceeds available space, constrain by height instead
+    if (newHeight > maxHeight) {
+        newHeight = maxHeight;
+        newWidth = newHeight * ASPECT_RATIO;
+    }
+
+    WIDTH = Math.floor(newWidth);
+    HEIGHT = Math.floor(newHeight);
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+}
+
+// Initialize canvas size
+resizeCanvas();
+
+// Handle window resize
+window.addEventListener('resize', resizeCanvas);
 
 // Coordinate system: -100 to 100 for both x and y
 const COORD_RANGE = 100;

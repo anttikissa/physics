@@ -101,17 +101,24 @@ function createBall(x, y, radius, vx = 0, vy = 0) {
     return obj;
 }
 
-// Update physics for all objects
-function updatePhysics() {
+// Apply gravity to all objects
+function applyGravity() {
     for (const obj of objects) {
-        // Apply gravity (negative y direction)
         obj.vy -= GRAVITY * DT;
+    }
+}
 
-        // Update positions
+// Move all objects: update positions based on velocities
+function moveObjects() {
+    for (const obj of objects) {
         obj.x += obj.vx * DT;
         obj.y += obj.vy * DT;
+    }
+}
 
-        // Collision detection with boundaries
+// Handle collisions with walls/boundaries
+function collideWalls() {
+    for (const obj of objects) {
         // Floor collision (y = -100)
         if (obj.y - obj.radius < -COORD_RANGE) {
             obj.y = -COORD_RANGE + obj.radius;
@@ -136,8 +143,10 @@ function updatePhysics() {
             obj.vx = -obj.vx;
         }
     }
+}
 
-    // Ball-to-ball collision detection and response
+// Handle ball-to-ball collisions
+function collideObjects() {
     for (let i = 0; i < objects.length; i++) {
         for (let j = i + 1; j < objects.length; j++) {
             const a = objects[i];
@@ -182,8 +191,16 @@ function updatePhysics() {
     }
 }
 
-// Render all objects
-function render() {
+// Update physics for all objects
+function updatePhysics() {
+    applyGravity();
+    moveObjects();
+    collideWalls();
+    collideObjects();
+}
+
+// Draw all objects
+function draw() {
     setBackground('#f0f0f0');
 
     for (const obj of objects) {
@@ -211,7 +228,7 @@ function gameLoop(currentTime) {
         accumulator -= DT;
     }
 
-    render();
+    draw();
     requestAnimationFrame(gameLoop);
 }
 

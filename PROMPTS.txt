@@ -8,4 +8,5 @@ de16a382: make project available on gh pages
 de16a382: add README with link to gh pages and explanation how project is made: claude code web only, save prompts to PROMPTS.md, etc
 9e6e681a: Add simple physics loop. All objects like balls should contain x, y coordinates and velocities. Every frame (60 fps), change velocity. There should be gravity so that it takes about 1 second for a ball in (0, 80) to fall to the bottom (0, -100). Wait, is Y coordinate increasing when going up?
 da9de8de: Constrain the canvas size so that on mobile (and desktop browser with dev tools open) it should take at most (100% - 10px margin on both sides) of the available with and height
+891c1ad9: Add simple collision detection and handling: floor, ceiling reverse y velocity, walls reverse x
 891c1ad9: Tapping on canvas creates a ball, r: 10, vx -50 to 50, vy -20 to 40

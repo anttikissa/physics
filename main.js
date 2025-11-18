@@ -119,31 +119,39 @@ function moveObjects() {
 // Handle collisions with walls/boundaries
 function collideWalls() {
     for (const obj of objects) {
+        let collided = false;
+
         // Floor collision (y = -100)
         if (obj.y - obj.radius < -COORD_RANGE) {
             obj.y = -COORD_RANGE + obj.radius;
-            obj.vy = -obj.vy * 0.9;
-            obj.vx *= 0.9;
+            obj.vy = -obj.vy;
+            collided = true;
         }
 
         // Ceiling collision (y = 100)
         if (obj.y + obj.radius > COORD_RANGE) {
             obj.y = COORD_RANGE - obj.radius;
-            obj.vy = -obj.vy * 0.9;
-            obj.vx *= 0.9;
+            obj.vy = -obj.vy;
+            collided = true;
         }
 
         // Left wall collision (x = -100)
         if (obj.x - obj.radius < -COORD_RANGE) {
             obj.x = -COORD_RANGE + obj.radius;
-            obj.vx = -obj.vx * 0.9;
-            obj.vy *= 0.9;
+            obj.vx = -obj.vx;
+            collided = true;
         }
 
         // Right wall collision (x = 100)
         if (obj.x + obj.radius > COORD_RANGE) {
             obj.x = COORD_RANGE - obj.radius;
-            obj.vx = -obj.vx * 0.9;
+            obj.vx = -obj.vx;
+            collided = true;
+        }
+
+        // Reduce velocity by 10% on collision
+        if (collided) {
+            obj.vx *= 0.9;
             obj.vy *= 0.9;
         }
     }

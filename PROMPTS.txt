@@ -17,3 +17,4 @@ b900dda9: Yeah do apply gravity separately
 af365b39: On every collision, reduce velocity of colliding object by 10%
 6c898f7e: Also make balls different size; size should range from 4 to 15 randomly
 5db5a79d: Then, when I keep touching the screen or holding mouse button, you should repeatedly create balls (10 per second). Tapping once should still create just 1 ball. Repetition should start once tap/click has been active for 0.3 seconds
+b2b7213d: Make collideWalls cleaner; first do the collision response, save boolean variable collided and if it is true at end, then reduce velocity

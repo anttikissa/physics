@@ -100,6 +100,31 @@ function updatePhysics() {
         // Update positions
         obj.x += obj.vx * DT;
         obj.y += obj.vy * DT;
+
+        // Collision detection with boundaries
+        // Floor collision (y = -100)
+        if (obj.y - obj.radius < -COORD_RANGE) {
+            obj.y = -COORD_RANGE + obj.radius;
+            obj.vy = -obj.vy;
+        }
+
+        // Ceiling collision (y = 100)
+        if (obj.y + obj.radius > COORD_RANGE) {
+            obj.y = COORD_RANGE - obj.radius;
+            obj.vy = -obj.vy;
+        }
+
+        // Left wall collision (x = -100)
+        if (obj.x - obj.radius < -COORD_RANGE) {
+            obj.x = -COORD_RANGE + obj.radius;
+            obj.vx = -obj.vx;
+        }
+
+        // Right wall collision (x = 100)
+        if (obj.x + obj.radius > COORD_RANGE) {
+            obj.x = COORD_RANGE - obj.radius;
+            obj.vx = -obj.vx;
+        }
     }
 }
 

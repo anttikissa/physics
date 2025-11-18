@@ -243,7 +243,7 @@ function gameLoop(currentTime) {
 }
 
 // Create a test ball at (0, 80)
-createBall(0, 80, 10);
+createBall(0, 80, Math.random() * 11 + 4);
 
 // Handle canvas clicks/taps to create balls
 canvas.addEventListener('click', (event) => {
@@ -258,7 +258,9 @@ canvas.addEventListener('click', (event) => {
     const vx = Math.random() * 100 - 50;
     const vy = Math.random() * 60 - 20;
 
-    createBall(x, y, 10, vx, vy);
+    // Random radius from 4 to 15
+    const radius = Math.random() * 11 + 4;
+    createBall(x, y, radius, vx, vy);
 });
 
 // Start the game loop

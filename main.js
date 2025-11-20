@@ -253,6 +253,15 @@ function gameLoop(currentTime) {
 // Create a test ball at (0, 80)
 createBall(0, 80, Math.random() * 11 + 4);
 
+// Ball at (90, -90) and one 50 units above
+createBall(90, -90, 10);
+createBall(90, -40, 10);
+
+// Two balls at x: 40 and x: 60, and one above them at (50, 0)
+createBall(40, -50, 10);
+createBall(60, -50, 10);
+createBall(50, 0, 10);
+
 // Find ball at given coordinates, returns index or -1 if not found
 function findBallAt(x, y) {
     for (let i = objects.length - 1; i >= 0; i--) {

@@ -20,3 +20,4 @@ af365b39: On every collision, reduce velocity of colliding object by 10%
 b2b7213d: Make collideWalls cleaner; first do the collision response, save boolean variable collided and if it is true at end, then reduce velocity
 68a07dc9: The object creation point should follow mouse/touch when dragging
 f6907fbd: Tapping on a ball should explode it. Remove it from the list and add impact velocity to nearby balls.
+8543504c: To point (90, -90) add ball, r: 10; one 50 units above it; two at x: 40 and x: 60 and one above them at x: 50, y: 0

@@ -186,24 +186,23 @@ function collideObjects() {
                 b.x += nx * halfOverlap;
                 b.y += ny * halfOverlap;
 
-                // Mirror velocities along collision line
-                // v -= 2 * vProjection where vProjection = (v · n) * n
+                // Calculate relative velocity along collision normal
+                const relVelX = b.vx - a.vx;
+                const relVelY = b.vy - a.vy;
+                const relVelAlongNormal = relVelX * nx + relVelY * ny;
 
-                // For ball a
-                const dotA = a.vx * nx + a.vy * ny;
-                a.vx -= 2 * dotA * nx;
-                a.vy -= 2 * dotA * ny;
-                // Reduce velocity by 10%
-                a.vx *= 0.9;
-                a.vy *= 0.9;
+                // Only apply collision response if balls are approaching
+                if (relVelAlongNormal < 0) {
+                    // For equal mass elastic collision, exchange velocity components along normal
+                    // Apply restitution (0.9) for some energy loss
+                    const restitution = 0.9;
+                    const impulse = -(1 + restitution) * relVelAlongNormal / 2;
 
-                // For ball b
-                const dotB = b.vx * nx + b.vy * ny;
-                b.vx -= 2 * dotB * nx;
-                b.vy -= 2 * dotB * ny;
-                // Reduce velocity by 10%
-                b.vx *= 0.9;
-                b.vy *= 0.9;
+                    a.vx -= impulse * nx;
+                    a.vy -= impulse * ny;
+                    b.vx += impulse * nx;
+                    b.vy += impulse * ny;
+                }
             }
         }
     }

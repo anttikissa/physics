@@ -257,7 +257,7 @@ createBall(90, -40, 10);
 // Two balls at x: 40 and x: 60, and one above them at (50, -30)
 createBall(40, -80, 10);
 createBall(60, -80, 10);
-createBall(50, -30, 10);
+createBall(50, -60, 10);
 
 // Find ball at given coordinates, returns index or -1 if not found
 function findBallAt(x, y) {

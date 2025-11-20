@@ -21,3 +21,4 @@ b2b7213d: Make collideWalls cleaner; first do the collision response, save boole
 68a07dc9: The object creation point should follow mouse/touch when dragging
 f6907fbd: Tapping on a ball should explode it. Remove it from the list and add impact velocity to nearby balls.
 8543504c: To point (90, -90) add ball, r: 10; one 50 units above it; two at x: 40 and x: 60 and one above them at x: 50, y: 0
+4092e852: Move the leftmost balls 30 units down and get rid of the first random ball
